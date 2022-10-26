@@ -15,7 +15,6 @@ import InfoTooltip from "./InfoTooltip";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
 
-
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
@@ -34,19 +33,54 @@ function App() {
   const [cards, setCards] = useState([]);
   const history = useHistory();
 
-  function handleRegisration(email, password) {
-    console.log(email)
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth(jwt);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function auth(jwt) {
+    return api.getContent(jwt).then(({ data }) => {
+      if (data) {
+        setLoggedIn(true);
+        history.push("/");
+      }
+    });
+  }
+
+  function handleRegister(email, password) {
     api
       .register(email, password)
       .then((res) => {
         if (res) {
           setAuthResult(true);
           setIsInfoTooltipPopupOpen(true);
-          history.push('/sign-in')
+          history.push("/sign-in");
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Ошибка ${err}`);
+        setAuthResult(false);
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
+
+  function handleLogin(email, password) {
+    api
+      .authorize(email, password)
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("jwt", res.token);
+          setAuthResult(true);
+          setIsInfoTooltipPopupOpen(true);
+          setLoggedIn(true);
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}`);
         setAuthResult(false);
         setIsInfoTooltipPopupOpen(true);
       });
@@ -54,18 +88,20 @@ function App() {
 
   //getting user and cards data from server
   useEffect(() => {
-    api
-      .getAllData()
-      .then(([userData, cardList]) => {
-        //profile
-        setCurrentUser(userData);
-        //cards
-        setCards(cardList);
-      })
-      .catch((err) => {
-        console.log(`Ошибка ${err}`);
-      });
-  }, []);
+    if (loggedIn) {
+      api
+        .getAllData()
+        .then(([userData, cardList]) => {
+          //profile
+          setCurrentUser(userData);
+          //cards
+          setCards(cardList);
+        })
+        .catch((err) => {
+          console.log(`Ошибка ${err}`);
+        });
+    }
+  }, [loggedIn]);
 
   //-----------------Card section----------------//
 
@@ -204,10 +240,10 @@ function App() {
             cards={cards}
           />
           <Route path="/sign-up">
-            <Register onRegister={handleRegisration}/>
+            <Register onRegister={handleRegister} />
           </Route>
           <Route path="/sign-in">
-            <Login />
+            <Login onLogin={handleLogin} />
           </Route>
           <Route path="*">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}

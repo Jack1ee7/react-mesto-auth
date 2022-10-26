@@ -1,13 +1,23 @@
-// import { Route, Redirect } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function Login({}) {
+function Login({onLogin}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitted, setIsSubmited] = useState(false)
   
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-function handleSubmit(e) {
-  e.preventDefault();
-}
+  // reset form inputs on submit
+  useEffect(() => {
+    if (isSubmitted) {
+      setEmail('');
+      setPassword('');
+    }
+  }, [isSubmitted])
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onLogin(email, password);
+    setIsSubmited(true)
+  }
   return (
     <div className="authentication">
       <h2 className="authentication__form-title">Вход</h2>
@@ -19,7 +29,7 @@ function handleSubmit(e) {
           id="email"
           name="email"
           type="email"
-          value={email || ''}
+          value={email || ""}
           onChange={({ target }) => setEmail(target.value)}
         />
         <input
@@ -29,7 +39,7 @@ function handleSubmit(e) {
           id="password"
           name="password"
           type="password"
-          value={password || ''}
+          value={password || ""}
           onChange={({ target }) => setPassword(target.value)}
         />
         <button

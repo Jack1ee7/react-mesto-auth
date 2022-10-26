@@ -6,9 +6,9 @@ function Register({ onRegister }) {
   const [password, setPassword] = useState("");
   const [isSubmitted, setIsSubmited] = useState(false)
 
+  // reset form inputs on submit
   useEffect(() => {
     if (isSubmitted) {
-      console.log('test')
       setEmail('');
       setPassword('');
     }

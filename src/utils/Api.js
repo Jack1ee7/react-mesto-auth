@@ -14,16 +14,24 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  authorize (email, password) {
-    return fetch(`https://auth.nomoreparties.co/signip`, {
+  authorize(email, password) {
+    return fetch(`https://auth.nomoreparties.co/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({email, password),
-    })
-    .then(this._getResponseData)
-    // .then(e);
+      body: JSON.stringify({ email, password }),
+    }).then(this._getResponseData);
+  }
+
+  getContent(jwt) {
+    return fetch(`https://auth.nomoreparties.co/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }).then(this._getResponseData);
   }
 
   _getResponseData(res) {
