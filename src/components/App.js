@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Header from "./Header";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
@@ -15,9 +15,10 @@ import InfoTooltip from "./InfoTooltip";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
 
+
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddCardPopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -29,8 +30,27 @@ function App() {
     link: "",
     _id: "",
   });
-  const [authResult, setAuthResult] = useState(true);
+  const [authResult, setAuthResult] = useState(false);
   const [cards, setCards] = useState([]);
+  const history = useHistory();
+
+  function handleRegisration(email, password) {
+    console.log(email)
+    api
+      .register(email, password)
+      .then((res) => {
+        if (res) {
+          setAuthResult(true);
+          setIsInfoTooltipPopupOpen(true);
+          history.push('/sign-in')
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setAuthResult(false);
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
 
   //getting user and cards data from server
   useEffect(() => {
@@ -184,12 +204,12 @@ function App() {
             cards={cards}
           />
           <Route path="/sign-up">
-            <Register />
+            <Register onRegister={handleRegisration}/>
           </Route>
           <Route path="/sign-in">
             <Login />
           </Route>
-          <Route exact path="*">
+          <Route path="*">
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>

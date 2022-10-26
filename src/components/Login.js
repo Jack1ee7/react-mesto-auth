@@ -1,10 +1,13 @@
 // import { Route, Redirect } from "react-router-dom";
-function handleChange(e) {}
+import { useState } from "react";
+
+function Login({}) {
+  
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
 function handleSubmit(e) {
   e.preventDefault();
 }
-
-function Login({}) {
   return (
     <div className="authentication">
       <h2 className="authentication__form-title">Вход</h2>
@@ -16,8 +19,8 @@ function Login({}) {
           id="email"
           name="email"
           type="email"
-          value={""}
-          onChange={handleChange}
+          value={email || ''}
+          onChange={({ target }) => setEmail(target.value)}
         />
         <input
           className="authentication__input"
@@ -26,8 +29,8 @@ function Login({}) {
           id="password"
           name="password"
           type="password"
-          value={""}
-          onChange={handleChange}
+          value={password || ''}
+          onChange={({ target }) => setPassword(target.value)}
         />
         <button
           type="submit"

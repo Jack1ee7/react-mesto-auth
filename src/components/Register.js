@@ -1,10 +1,25 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-function handleChange(e) {}
-function handleSubmit(e) {
-  e.preventDefault();
-}
 
-function Register({}) {
+function Register({ onRegister }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitted, setIsSubmited] = useState(false)
+
+  useEffect(() => {
+    if (isSubmitted) {
+      console.log('test')
+      setEmail('');
+      setPassword('');
+    }
+  }, [isSubmitted])
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onRegister(email, password)
+    setIsSubmited(true)
+  }
+
   return (
     <div className="authentication">
       <h2 className="authentication__form-title">Регистрация</h2>
@@ -13,25 +28,22 @@ function Register({}) {
           className="authentication__input"
           required
           placeholder="Email"
-          id="email"
           name="email"
           type="email"
-          value={""}
-          onChange={handleChange}
+          value={email || ""}
+          onChange={({ target }) => setEmail(target.value)}
         />
         <input
           className="authentication__input"
           required
           placeholder="Пароль"
-          id="password"
           name="password"
           type="password"
-          value={""}
-          onChange={handleChange}
+          value={password || ""}
+          onChange={({ target }) => setPassword(target.value)}
         />
         <button
           type="submit"
-          onSubmit={handleSubmit}
           className="authentication__form-submit-button"
         >
           Зарегистрироваться
