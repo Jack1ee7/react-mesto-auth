@@ -17,7 +17,11 @@ import api from "../utils/Api";
 import avatarPlaceholder from "../images/avatar.svg";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({
+    name: "Name",
+    about: "Description",
+    avatar: avatarPlaceholder,
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddCardPopupOpen] = useState(false);
@@ -36,14 +40,14 @@ function App() {
   const history = useHistory();
 
   //placeholders on mount
-  useEffect(() => {
-    const userPlaceholder = {
-      name: "Name",
-      about: "Description",
-      avatar: avatarPlaceholder,
-    };
-    setCurrentUser(userPlaceholder);
-  }, []);
+  // useEffect(() => {
+  //   const userPlaceholder = {
+  //     name: "Name",
+  //     about: "Description",
+  //     avatar: avatarPlaceholder,
+  //   };
+  //   setCurrentUser(userPlaceholder);
+  // }, []);
 
   // check if token in local storage, if it exists then auth user
   useEffect(() => {
@@ -179,7 +183,10 @@ function App() {
   function handleUpdateUser(userData) {
     api
       .setUserInfo(userData)
-      .then((data) => setCurrentUser(data), closeAllPopups())
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
       });
@@ -241,15 +248,6 @@ function App() {
       <div className="page">
         <Header onLogout={handleLogout} email={email} />
         <Switch>
-          {/* <Main
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDeleteClick={handleCardDeleteClick}
-            cards={cards}
-          /> */}
           <ProtectedRoute
             exact
             path="/"

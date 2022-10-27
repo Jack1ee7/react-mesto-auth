@@ -17,7 +17,6 @@ function Main({
   const cardsElements = cards.map((card) => (
     <li className="pictures__item" key={card._id}>
       <Card
-        key={card._id}
         onCardClick={onCardClick}
         onCardLike={onCardLike}
         onCardDeleteClick={onCardDeleteClick}
