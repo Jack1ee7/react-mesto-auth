@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
@@ -14,10 +14,11 @@ import DeleteCardPopup from "./DeleteCardPopup";
 import InfoTooltip from "./InfoTooltip";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
+import avatarPlaceholder from "../images/avatar.svg";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddCardPopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -31,8 +32,20 @@ function App() {
   });
   const [authResult, setAuthResult] = useState(false);
   const [cards, setCards] = useState([]);
+  const [email, setEmail] = useState("email");
   const history = useHistory();
 
+  //placeholders on mount
+  useEffect(() => {
+    const userPlaceholder = {
+      name: "Name",
+      about: "Description",
+      avatar: avatarPlaceholder,
+    };
+    setCurrentUser(userPlaceholder);
+  }, []);
+
+  // check if token in local storage, if it exists then auth user
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
@@ -41,15 +54,19 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // auth user by using token
+  // then set loggedIn to true if successful and redirect to main page
   function auth(jwt) {
     return api.getContent(jwt).then(({ data }) => {
       if (data) {
-        setLoggedIn(true);
+        setEmail(data.email);
+        setIsLoggedIn(true);
         history.push("/");
       }
     });
   }
 
+  // create user profile on server then redirect to login if successful
   function handleRegister(email, password) {
     api
       .register(email, password)
@@ -67,15 +84,15 @@ function App() {
       });
   }
 
+  // login user then redirect to main page if successful
   function handleLogin(email, password) {
     api
       .authorize(email, password)
       .then((res) => {
         if (res) {
+          setEmail(email);
           localStorage.setItem("jwt", res.token);
-          setAuthResult(true);
-          setIsInfoTooltipPopupOpen(true);
-          setLoggedIn(true);
+          setIsLoggedIn(true);
           history.push("/");
         }
       })
@@ -88,7 +105,7 @@ function App() {
 
   //getting user and cards data from server
   useEffect(() => {
-    if (loggedIn) {
+    if (isLoggedIn) {
       api
         .getAllData()
         .then(([userData, cardList]) => {
@@ -101,7 +118,12 @@ function App() {
           console.log(`Ошибка ${err}`);
         });
     }
-  }, [loggedIn]);
+  }, [isLoggedIn]);
+
+  function handleLogout() {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+  }
 
   //-----------------Card section----------------//
 
@@ -150,6 +172,8 @@ function App() {
   }
 
   //-----------------User data section----------------//
+
+  //placeholder for user
 
   // name/description setter
   function handleUpdateUser(userData) {
@@ -215,7 +239,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header onLogout={handleLogout} email={email} />
         <Switch>
           {/* <Main
             onEditAvatar={handleEditAvatarClick}
@@ -229,7 +253,7 @@ function App() {
           <ProtectedRoute
             exact
             path="/"
-            loggedIn={loggedIn}
+            loggedIn={isLoggedIn}
             component={Main}
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
@@ -246,10 +270,10 @@ function App() {
             <Login onLogin={handleLogin} />
           </Route>
           <Route path="*">
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
-        {loggedIn && <Footer />}
+        {isLoggedIn && <Footer />}
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
