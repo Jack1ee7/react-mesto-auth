@@ -15,13 +15,14 @@ function Main({
   const currentUser = useContext(CurrentUserContext);
   //creating card elements from data
   const cardsElements = cards.map((card) => (
+    <li className="pictures__item" key={card._id}>
       <Card
-        key={card._id} 
         onCardClick={onCardClick}
         onCardLike={onCardLike}
         onCardDeleteClick={onCardDeleteClick}
         card={card}
       />
+    </li>
   ));
 
   return (

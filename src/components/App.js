@@ -248,15 +248,6 @@ function App() {
       <div className="page">
         <Header onLogout={handleLogout} email={email} />
         <Switch>
-          {/* <Main
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDeleteClick={handleCardDeleteClick}
-            cards={cards}
-          /> */}
           <ProtectedRoute
             exact
             path="/"
