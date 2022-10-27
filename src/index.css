@@ -2,6 +2,10 @@
 @import url(./vendor/fonts/fonts.css);
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
+@import url(./blocks/header/__link/header__link.css);
+@import url(./blocks/header/__container/header__container.css);
+@import url(./blocks/header/__email/header__email.css);
+@import url(./blocks/header/__logout-button/header__logout-button.css);
 @import url(./blocks/page/page.css);
 @import url(./blocks/content/content.css);
 @import url(./blocks/profile/profile.css);
@@ -41,7 +45,15 @@
 @import url(./blocks/popup/__form-submit-button/popup__form-submit-button.css);
 @import url(./blocks/popup/__form-close-button/popup__close-button.css);
 @import url(./blocks/popup/__form-submit-button/_disabled/popup__form-submit-button_disabled.css);
+@import url(./blocks/popup/__title/popup__title.css);
 @import url(./blocks/popup/__container/popup__container.css);
+@import url(./blocks/popup/__container/_type/popup__container_type_auth.css);
 @import url(./blocks/popup/__error/popup__error.css);
 @import url(./blocks/popup/__error/_status/popup__error_status_visible.css);
 @import url(./blocks/overlay/overlay.css);
+@import url(./blocks/authentication/__form/authentication__form.css);
+@import url(./blocks/authentication/authentication.css);
+@import url(./blocks/authentication/__form-title/authentication__form-title.css);
+@import url(./blocks/authentication/__form-input/authentication__form-input.css);
+@import url(./blocks/authentication/__form-submit-button/authentication__form-submit-button.css);
+@import url(./blocks/authentication/__link/authentication__link.css);

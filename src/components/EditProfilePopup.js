@@ -14,15 +14,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser, isOpen]);
-
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
-
-  function handleDescriptionChange(e) {
-    setDescription(e.target.value);
-  }
+  }, [currentUser, isOpen]); 
 
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
@@ -55,7 +47,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           minLength="2"
           maxLength="40"
           value={name || ""}
-          onChange={handleNameChange}
+          onChange={({ target }) => setName(target.value)}
         />
         <span className="popup__error" id="name-error"></span>
       </div>
@@ -70,7 +62,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           minLength="2"
           maxLength="200"
           value={description || ""}
-          onChange={handleDescriptionChange}
+          onChange={({ target }) => setDescription(target.value)}
         />
         <span className="popup__error" id="occupation-error"></span>
       </div>

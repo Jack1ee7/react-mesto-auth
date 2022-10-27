@@ -5,14 +5,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
 
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
-
-  function handleLinkChange(e) {
-    setLink(e.target.value);
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
     onAddPlace({
@@ -47,7 +39,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           minLength="2"
           maxLength="30"
           value={name || ""}
-          onChange={handleNameChange}
+          onChange={({ target }) => setName(target.value)}
         />
         <span className="popup__error" id="title-error"></span>
       </div>
@@ -60,7 +52,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           placeholder="Ссылка на картинку"
           required
           value={link || ""}
-          onChange={handleLinkChange}
+          onChange={({ target }) => setLink(target.value)}
         />
         <span className="popup__error" id="link-error"></span>
       </div>

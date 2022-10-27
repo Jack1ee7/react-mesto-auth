@@ -4,6 +4,36 @@ class Api {
     this._headers = config.headers;
   }
 
+  register(email, password) {
+    return fetch(`https://auth.nomoreparties.co/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }).then(this._getResponseData);
+  }
+
+  authorize(email, password) {
+    return fetch(`https://auth.nomoreparties.co/signin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }).then(this._getResponseData);
+  }
+
+  getContent(jwt) {
+    return fetch(`https://auth.nomoreparties.co/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    }).then(this._getResponseData);
+  }
+
   _getResponseData(res) {
     if (res.ok) {
       return res.json();
