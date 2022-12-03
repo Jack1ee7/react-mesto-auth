@@ -1,8 +1,24 @@
 import success from "../images/auth-succes-icon.svg";
 import error from "../images/auth-error-icon.svg";
-function InfoTooltip({ isOpen, authResult, onClose }) {
+import { useEffect } from "react";
+const InfoTooltip = ({ isOpen, authResult, onClose }) => {
+
   const icon = authResult ? success : error;
   const text = authResult ? "Вы успешно зарегистрировались!" : "Что-то пошло не так! Попробуйте ещё раз.";
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+    document.addEventListener("keydown", handleEscClose);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <section
       className={`popup ${isOpen ? "popup_status_opened" : ""}`}

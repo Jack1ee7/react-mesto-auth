@@ -71,7 +71,7 @@ function App() {
   }
 
   // create user profile on server then redirect to login if successful
-  function handleRegister(email, password) {
+  const handleRegister = (email, password) => {
     api
       .register(email, password)
       .then((res) => {
@@ -89,7 +89,7 @@ function App() {
   }
 
   // login user then redirect to main page if successful
-  function handleLogin(email, password) {
+  const handleLogin = (email, password) => {
     api
       .authorize(email, password)
       .then((res) => {
@@ -124,14 +124,14 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  function handleLogout() {
+  const handleLogout = () => {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
   }
 
   //-----------------Card section----------------//
 
-  function handleCardDelete(card) {
+  const handleCardDelete = (card) => {
     api
       .deleteCard(card._id)
       .then(() => {
@@ -143,7 +143,7 @@ function App() {
       });
   }
 
-  function handleCardLike(card) {
+  const handleCardLike = (card) => {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
@@ -163,7 +163,7 @@ function App() {
 
   //---------------Add card-----------------//
 
-  function handleAddPlaceSubmit(data) {
+  const handleAddPlaceSubmit = (data) => {
     api
       .sendNewCard(data)
       .then((newCard) => {
@@ -180,7 +180,7 @@ function App() {
   //placeholder for user
 
   // name/description setter
-  function handleUpdateUser(userData) {
+  const handleUpdateUser = (userData) => {
     api
       .setUserInfo(userData)
       .then((data) => {
@@ -192,7 +192,7 @@ function App() {
       });
   }
   // avatar setter
-  function handleUpdateAvatar(userData) {
+  const handleUpdateAvatar = (userData) => {
     api
       .setAvatar(userData)
       .then((data) => setCurrentUser(data), closeAllPopups())
@@ -204,19 +204,19 @@ function App() {
   //-----------------Popups section----------------//
 
   //open profile edit popup
-  function handleEditProfileClick() {
+  const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
   }
   //open add card popup
-  function handleAddPlaceClick() {
+  const handleAddPlaceClick = () => {
     setIsAddCardPopupOpen(true);
   }
   //open avatar edit popup
-  function handleEditAvatarClick() {
+  const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
   }
   //open image on fullscreen
-  function handleCardClick(card) {
+  const handleCardClick = (card) => {
     setSelectedCard({
       name: card.name,
       link: card.link,
@@ -224,7 +224,7 @@ function App() {
     setIsImagePopupOpen(true);
   }
   // open delete card popup
-  function handleCardDeleteClick(card) {
+  const handleCardDeleteClick = (card) => {
     setSelectedCard({
       name: card.name,
       link: card.link,
@@ -234,7 +234,7 @@ function App() {
   }
 
   //close all popups
-  function closeAllPopups() {
+  const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddCardPopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -243,6 +243,7 @@ function App() {
     setIsInfoTooltipPopupOpen(false);
     setSelectedCard({ name: "", link: "" });
   }
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">

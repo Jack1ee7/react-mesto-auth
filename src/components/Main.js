@@ -3,7 +3,7 @@ import avatarEditIcon from "../images/avatar-edit-icon.svg";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main({
+const Main = ({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
@@ -11,7 +11,7 @@ function Main({
   onCardLike,
   onCardDeleteClick,
   cards,
-}) {
+}) => {
   const currentUser = useContext(CurrentUserContext);
   //creating card elements from data
   const cardsElements = cards.map((card) => (

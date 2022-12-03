@@ -18,15 +18,15 @@ function Card({ onCardClick, onCardLike, onCardDeleteClick, card }) {
     isLiked ? "pictures__like-button_status_active" : ""
   }`;
 
-  function handleCardClick() {
+  const handleCardClick = () => {
     onCardClick(card);
   }
 
-  function handleCardDeleteСlick() {
+  const handleCardDeleteСlick = () => {
     onCardDeleteClick(card);
   }
 
-  function handleCardLike() {
+  const handleCardLike = () => {
     onCardLike(card);
   }
 

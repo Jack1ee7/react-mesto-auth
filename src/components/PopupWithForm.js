@@ -1,4 +1,6 @@
-function PopupWithForm({
+import { useEffect } from "react";
+
+const PopupWithForm = ({
   name,
   title,
   isOpen,
@@ -6,7 +8,21 @@ function PopupWithForm({
   buttonText,
   onSubmit,
   children,
-}) {
+}) => {
+  
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+    document.addEventListener("keydown", handleEscClose);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <section
       className={`popup popup_type_${name} ${

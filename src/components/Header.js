@@ -1,6 +1,6 @@
 import logo from "../images/logo.svg";
 import { Link, Route, Switch } from "react-router-dom";
-function Header({ onLogout, email }) {
+const Header = ({ onLogout, email }) => {
 
   return (
     <header className="header">
