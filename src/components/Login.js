@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function Login({onLogin}) {
+const Login = ({onLogin}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitted, setIsSubmited] = useState(false)
@@ -13,7 +13,7 @@ function Login({onLogin}) {
     }
   }, [isSubmitted])
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onLogin(email, password);
     setIsSubmited(true)

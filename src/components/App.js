@@ -174,7 +174,10 @@ const App = () => {
 
   // name/description setter
   const handleUpdateUser = (userData) => {
+<<<<<<< HEAD
     setIsUserSendig(true);
+=======
+>>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
     api
       .setUserInfo(userData)
       .then((data) => {
@@ -187,7 +190,10 @@ const App = () => {
   }
   // avatar setter
   const handleUpdateAvatar = (userData) => {
+<<<<<<< HEAD
     setIsUserSendig(true);
+=======
+>>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
     api
       .setAvatar(userData)
       .then((data) => setCurrentUser(data), closeAllPopups())
@@ -200,6 +206,7 @@ const App = () => {
   //-----------------Popups section----------------//
 
   //open profile edit popup
+<<<<<<< HEAD
   const handleEditProfileClick = ()  =>  {
     setIsEditProfilePopupOpen(true);
   }
@@ -209,6 +216,17 @@ const App = () => {
   }
   //open avatar edit popup
   const handleEditAvatarClick = ()  => {
+=======
+  const handleEditProfileClick = () => {
+    setIsEditProfilePopupOpen(true);
+  }
+  //open add card popup
+  const handleAddPlaceClick = () => {
+    setIsAddCardPopupOpen(true);
+  }
+  //open avatar edit popup
+  const handleEditAvatarClick = () => {
+>>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
     setIsEditAvatarPopupOpen(true);
   }
   //open image on fullscreen
@@ -230,7 +248,11 @@ const App = () => {
   }
 
   //close all popups
+<<<<<<< HEAD
   const closeAllPopups = ()  =>{
+=======
+  const closeAllPopups = () => {
+>>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
     setIsEditProfilePopupOpen(false);
     setIsAddCardPopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -239,6 +261,7 @@ const App = () => {
     setIsInfoTooltipPopupOpen(false);
     setSelectedCard({ name: "", link: "" });
   }
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">

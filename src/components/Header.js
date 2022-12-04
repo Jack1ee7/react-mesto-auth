@@ -1,6 +1,10 @@
 import logo from "../images/logo.svg";
 import { Link, Route, Switch } from "react-router-dom";
 const Header = ({ onLogout, email }) => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
   return (
     <header className="header">
       <img src={logo} alt="Логотип Место" className="header__logo" />
