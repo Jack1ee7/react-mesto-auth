@@ -1,26 +1,34 @@
-import { useRef } from "react";
+import { useEffect } from "react";
+import { useFormWitchValidation } from "../hooks/useForms";
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const avatarRef = useRef();
+const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar, isSending }) => {
+  const { values, handleChange, resetForm, errors, isValid } =
+    useFormWitchValidation();
 
-  function handleSubmit(e) {
+  useEffect(() => {
+    resetForm({}, true);
+  }, [resetForm, isOpen]);
+
+  const handleSubmit = (e) => {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
 
     onUpdateAvatar({
-      avatar: avatarRef.current.value,
-    });
-  }
+      avatar: e.target.avatar.value,
+    }); 
+  };
 
+  console.log(values);
   return (
     <PopupWithForm
       name={"avatar"}
       title={"Обновить аватар"}
       isOpen={isOpen}
       onClose={onClose}
-      buttonText={"Сохранить"}
+      buttonText={isSending ? "Сохранение..." : "Сохранить"}
       onSubmit={handleSubmit}
+      isDisabled={!isValid || isSending}
     >
       <div className="popup__field">
         <input
@@ -29,13 +37,15 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
           name="avatar"
           id="avatar"
           placeholder="Ссылка на аватар"
-          ref={avatarRef}
-          required
+          value={values.avatar || ""}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="avatar-error"></span>
+        <span className="popup__error" id="name-error">
+          {errors.name || ""}
+        </span>
       </div>
     </PopupWithForm>
   );
-}
+};
 
 export default EditAvatarPopup;

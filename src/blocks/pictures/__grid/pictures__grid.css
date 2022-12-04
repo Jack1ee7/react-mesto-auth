@@ -1,7 +1,7 @@
 .pictures__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px 17px;
+  gap: 20px 18px;
   padding: 0;
   margin: 0;
 }

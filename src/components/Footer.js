@@ -1,4 +1,4 @@
-function Footer() {
+const Footer = () => {
   
   const date = new Date();
   return (

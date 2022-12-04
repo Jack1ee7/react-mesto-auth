@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Register({ onRegister }) {
+const Register = ({ onRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitted, setIsSubmited] = useState(false)
@@ -14,7 +14,7 @@ function Register({ onRegister }) {
     }
   }, [isSubmitted])
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onRegister(email, password)
     setIsSubmited(true)

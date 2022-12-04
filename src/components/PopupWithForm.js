@@ -1,12 +1,14 @@
-function PopupWithForm({
-  name,
-  title,
+const PopupWithForm = ({
   isOpen,
-  onClose,
-  buttonText,
   onSubmit,
+  onClose,
+  title,
+  name,
+  buttonText,
+  isDisabled = false,
   children,
-}) {
+}) => {
+  
   return (
     <section
       className={`popup popup_type_${name} ${
@@ -31,11 +33,13 @@ function PopupWithForm({
         >
           {children}
           <button
-            className="popup__form-submit-button"
+            className={`popup__form-submit-button ${
+              isDisabled && "popup__form-submit-button_disabled"
+              }`}
             type="submit"
-            id={`#${name}PopupSubmit`}
-          >
-            {`${buttonText}`}
+            disabled={isDisabled}
+          > 
+            {buttonText}
           </button>
         </form>
       </div>

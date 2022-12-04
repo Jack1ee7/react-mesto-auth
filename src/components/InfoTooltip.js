@@ -1,6 +1,6 @@
 import success from "../images/auth-succes-icon.svg";
 import error from "../images/auth-error-icon.svg";
-function InfoTooltip({ isOpen, authResult, onClose }) {
+const InfoTooltip = ({ isOpen, authResult, onClose }) => {
   const icon = authResult ? success : error;
   const text = authResult ? "Вы успешно зарегистрировались!" : "Что-то пошло не так! Попробуйте ещё раз.";
   return (

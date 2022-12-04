@@ -1,4 +1,4 @@
-function ImagePopup({ isOpen, card, onClose }) {
+const ImagePopup = ({ isOpen, card, onClose }) => {
   return (
     <div
       className={`popup popup_type_picture ${

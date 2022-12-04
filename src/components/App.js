@@ -1,3 +1,4 @@
+  import { useEffect, useState } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header";
 import ProtectedRoute from "./ProtectedRoute";
@@ -5,7 +6,6 @@ import Register from "./Register";
 import Login from "./Login";
 import Main from "./Main";
 import Footer from "./Footer";
-import { useEffect, useState } from "react";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -16,7 +16,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
 import avatarPlaceholder from "../images/avatar.svg";
 
-function App() {
+const App = () => {
   const [currentUser, setCurrentUser] = useState({
     name: "Name",
     about: "Description",
@@ -34,20 +34,13 @@ function App() {
     link: "",
     _id: "",
   });
+
+  //------ loading states ---------//
+  const [isUserSendig, setIsUserSendig] = useState(false);
   const [authResult, setAuthResult] = useState(false);
   const [cards, setCards] = useState([]);
   const [email, setEmail] = useState("email");
   const history = useHistory();
-
-  //placeholders on mount
-  // useEffect(() => {
-  //   const userPlaceholder = {
-  //     name: "Name",
-  //     about: "Description",
-  //     avatar: avatarPlaceholder,
-  //   };
-  //   setCurrentUser(userPlaceholder);
-  // }, []);
 
   // check if token in local storage, if it exists then auth user
   useEffect(() => {
@@ -60,7 +53,7 @@ function App() {
 
   // auth user by using token
   // then set loggedIn to true if successful and redirect to main page
-  function auth(jwt) {
+  const auth = (jwt) => {
     return api.getContent(jwt).then(({ data }) => {
       if (data) {
         setEmail(data.email);
@@ -71,7 +64,7 @@ function App() {
   }
 
   // create user profile on server then redirect to login if successful
-  function handleRegister(email, password) {
+  const handleRegister = (email, password) => {
     api
       .register(email, password)
       .then((res) => {
@@ -89,7 +82,7 @@ function App() {
   }
 
   // login user then redirect to main page if successful
-  function handleLogin(email, password) {
+  const handleLogin = (email, password) => {
     api
       .authorize(email, password)
       .then((res) => {
@@ -124,14 +117,14 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  function handleLogout() {
+  const handleLogout = () => {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
   }
 
   //-----------------Card section----------------//
 
-  function handleCardDelete(card) {
+  const handleCardDelete = (card) => {
     api
       .deleteCard(card._id)
       .then(() => {
@@ -143,7 +136,7 @@ function App() {
       });
   }
 
-  function handleCardLike(card) {
+  const handleCardLike = (card) => {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
@@ -163,7 +156,7 @@ function App() {
 
   //---------------Add card-----------------//
 
-  function handleAddPlaceSubmit(data) {
+  const handleAddPlaceSubmit = (data) => {
     api
       .sendNewCard(data)
       .then((newCard) => {
@@ -180,43 +173,46 @@ function App() {
   //placeholder for user
 
   // name/description setter
-  function handleUpdateUser(userData) {
+  const handleUpdateUser = (userData) => {
+    setIsUserSendig(true);
     api
       .setUserInfo(userData)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
       })
-      .catch((err) => {
-        console.log(`Ошибка ${err}`);
-      });
+      .catch((err) => 
+        console.log(`Ошибка ${err}`))
+      .finally(() => setIsUserSendig(false));
   }
   // avatar setter
-  function handleUpdateAvatar(userData) {
+  const handleUpdateAvatar = (userData) => {
+    setIsUserSendig(true);
     api
       .setAvatar(userData)
       .then((data) => setCurrentUser(data), closeAllPopups())
       .catch((err) => {
         console.log(`Ошибка ${err}`);
-      });
+      })
+      .finally(() => setIsUserSendig(false));
   }
 
   //-----------------Popups section----------------//
 
   //open profile edit popup
-  function handleEditProfileClick() {
+  const handleEditProfileClick = ()  =>  {
     setIsEditProfilePopupOpen(true);
   }
   //open add card popup
-  function handleAddPlaceClick() {
+  const handleAddPlaceClick = ()  => {
     setIsAddCardPopupOpen(true);
   }
   //open avatar edit popup
-  function handleEditAvatarClick() {
+  const handleEditAvatarClick = ()  => {
     setIsEditAvatarPopupOpen(true);
   }
   //open image on fullscreen
-  function handleCardClick(card) {
+  const handleCardClick = (card) => {
     setSelectedCard({
       name: card.name,
       link: card.link,
@@ -224,7 +220,7 @@ function App() {
     setIsImagePopupOpen(true);
   }
   // open delete card popup
-  function handleCardDeleteClick(card) {
+  const handleCardDeleteClick = (card) => {
     setSelectedCard({
       name: card.name,
       link: card.link,
@@ -234,7 +230,7 @@ function App() {
   }
 
   //close all popups
-  function closeAllPopups() {
+  const closeAllPopups = ()  =>{
     setIsEditProfilePopupOpen(false);
     setIsAddCardPopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -276,11 +272,13 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isSending={isUserSendig}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          isSending={isUserSendig}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}

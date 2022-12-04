@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ onCardClick, onCardLike, onCardDeleteClick, card }) {
+const Card = ({ onCardClick, onCardLike, onCardDeleteClick, card }) => {
   const currentUser = useContext(CurrentUserContext);
 
   // Определяем, являемся ли мы владельцем текущей карточки
@@ -18,15 +18,15 @@ function Card({ onCardClick, onCardLike, onCardDeleteClick, card }) {
     isLiked ? "pictures__like-button_status_active" : ""
   }`;
 
-  function handleCardClick() {
+  const handleCardClick = () => {
     onCardClick(card);
   }
 
-  function handleCardDeleteСlick() {
+  const handleCardDeleteСlick = () => {
     onCardDeleteClick(card);
   }
 
-  function handleCardLike() {
+  const handleCardLike = () => {
     onCardLike(card);
   }
 

@@ -1,32 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useFormWitchValidation } from "../hooks/useForms";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
+const AddPlacePopup = ({ isOpen, onClose, onAddPlace, isSending }) => {
+  const { values, handleChange, resetForm, errors, isValid } =
+    useFormWitchValidation();
 
-  function handleSubmit(e) {
+  useEffect(() => {
+    resetForm({}, true);
+  }, [resetForm, isOpen]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     onAddPlace({
       name: e.target.name.value,
       link: e.target.link.value,
     });
-  }
-
-  //clean input fields after closing/before opening popup
-  useEffect(() => {
-    setName("");
-    setLink("");
-  }, [isOpen]);
-
+  };
+  console.log(values);
   return (
     <PopupWithForm
       name={"add"}
       title={"Новое место"}
       isOpen={isOpen}
       onClose={onClose}
-      buttonText={"Создать"}
+      buttonText={isSending ? "Сохранение..." : "Сохранить"}
       onSubmit={handleSubmit}
+      isDisabled={!isValid || isSending}
     >
       <div className="popup__field">
         <input
@@ -38,10 +38,12 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           required
           minLength="2"
           maxLength="30"
-          value={name || ""}
-          onChange={({ target }) => setName(target.value)}
+          value={values.name || ""}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="title-error"></span>
+        <span className="popup__error" id="title-error">
+          {errors.name || ""}
+        </span>
       </div>
       <div className="popup__field">
         <input
@@ -51,13 +53,15 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           id="link"
           placeholder="Ссылка на картинку"
           required
-          value={link || ""}
-          onChange={({ target }) => setLink(target.value)}
+          value={values.link || ""}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="link-error"></span>
+        <span className="popup__error" id="link-error">
+          {errors.link || ""}
+        </span>
       </div>
     </PopupWithForm>
   );
-}
+};
 
 export default AddPlacePopup;

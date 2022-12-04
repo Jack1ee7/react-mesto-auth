@@ -1,40 +1,35 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { useFormWitchValidation } from "../hooks/useForms";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, isSending }) => {
 
   // Подписка на контекст
   const currentUser = useContext(CurrentUserContext);
 
-  // После загрузки текущего пользователя из API
-  // его данные будут использованы в управляемых компонентах.
+  const { values, handleChange, resetForm, errors, isValid } = useFormWitchValidation();
+
   useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser, isOpen]); 
+    if (currentUser) {
+      resetForm(currentUser, {}, true);
+    }
+  }, [currentUser, resetForm, isOpen]);
 
-  function handleSubmit(e) {
-    // Запрещаем браузеру переходить по адресу формы
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Передаём значения управляемых компонентов во внешний обработчик
-    onUpdateUser({
-      name,
-      about: description,
-    });
-  }
+    onUpdateUser(values);
+  };
 
   return (
     <PopupWithForm
-      name={"edit"}
-      title={"Редактировать профиль"}
       isOpen={isOpen}
-      onClose={onClose}
-      buttonText={"Сохранить"}
       onSubmit={handleSubmit}
+      onClose={onClose}
+      title={"Редактировать профиль"}
+      name={"edit"}
+      buttonText={isSending ? "Сохранение..." : "Сохранить"}
+      isDisabled={!isValid || isSending}
     >
       <div className="popup__field">
         <input
@@ -46,10 +41,13 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           required
           minLength="2"
           maxLength="40"
-          value={name || ""}
-          onChange={({ target }) => setName(target.value)}
+          pattern="[a-zA-Zа-яА-Я -]{1,}"
+          value={values.name || ""}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="name-error"></span>
+        <span className="popup__error" id="name-error">
+          {errors.name || ""}
+        </span>
       </div>
       <div className="popup__field">
         <input
@@ -61,13 +59,15 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           required
           minLength="2"
           maxLength="200"
-          value={description || ""}
-          onChange={({ target }) => setDescription(target.value)}
+          value={values.about || ""}
+          onChange={handleChange}
         />
-        <span className="popup__error" id="occupation-error"></span>
+        <span className="popup__error" id="occupation-error">
+          {errors.about || ""}
+        </span>
       </div>
     </PopupWithForm>
   );
-}
+};
 
 export default EditProfilePopup;
