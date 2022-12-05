@@ -6,13 +6,10 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace, isSending }) => {
   const { values, handleChange, resetForm, errors, isValid } =
     useFormWitchValidation();
 
-<<<<<<< HEAD
   useEffect(() => {
     resetForm({}, true);
   }, [resetForm, isOpen]);
 
-=======
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
   const handleSubmit = (e) => {
     e.preventDefault();
     onAddPlace({

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-const ImagePopup = ({ isOpen, card, onClose }) => {
-=======
 import { useEffect } from "react";
 
 const ImagePopup = ({ isOpen, card, onClose }) => {
@@ -18,7 +15,6 @@ const ImagePopup = ({ isOpen, card, onClose }) => {
     };
   }, [isOpen, onClose]);
 
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
   return (
     <div
       className={`popup popup_type_picture ${

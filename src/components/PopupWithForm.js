@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-const PopupWithForm = ({
-=======
 import { useEffect } from "react";
 
 const PopupWithForm = ({
-  name,
-  title,
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
   isOpen,
   onSubmit,
   onClose,
@@ -17,8 +11,6 @@ const PopupWithForm = ({
   children,
 }) => {
   
-<<<<<<< HEAD
-=======
   useEffect(() => {
     if (!isOpen) return;
     const handleEscClose = (e) => {
@@ -32,7 +24,6 @@ const PopupWithForm = ({
     };
   }, [isOpen, onClose]);
 
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
   return (
     <section
       className={`popup popup_type_${name} ${

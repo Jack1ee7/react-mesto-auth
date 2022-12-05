@@ -1,12 +1,8 @@
 import success from "../images/auth-succes-icon.svg";
 import error from "../images/auth-error-icon.svg";
-<<<<<<< HEAD
-const InfoTooltip = ({ isOpen, authResult, onClose }) => {
-=======
 import { useEffect } from "react";
 const InfoTooltip = ({ isOpen, authResult, onClose }) => {
 
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
   const icon = authResult ? success : error;
   const text = authResult ? "Вы успешно зарегистрировались!" : "Что-то пошло не так! Попробуйте ещё раз.";
 

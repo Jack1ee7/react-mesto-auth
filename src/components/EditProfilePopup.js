@@ -3,13 +3,7 @@ import { useFormWitchValidation } from "../hooks/useForms";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 
-<<<<<<< HEAD
 const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, isSending }) => {
-=======
-const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
 
   // Подписка на контекст
   const currentUser = useContext(CurrentUserContext);
@@ -23,14 +17,11 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   }, [currentUser, resetForm, isOpen]);
 
   const handleSubmit = (e) => {
-<<<<<<< HEAD
-=======
     // Запрещаем браузеру переходить по адресу формы
->>>>>>> 900d2f8b5a2f9615edbc08aa576d4753457bbe5a
     e.preventDefault();
     onUpdateUser(values);
   };
-
+  console.log(values)
   return (
     <PopupWithForm
       isOpen={isOpen}
@@ -45,8 +36,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
         <input
           className="popup__input"
           type="text"
-          name="name"
-          id="name"
+          name='name'
           placeholder="Имя"
           required
           minLength="2"
