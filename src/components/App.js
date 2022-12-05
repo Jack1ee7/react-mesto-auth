@@ -1,3 +1,4 @@
+  import { useEffect, useState } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header";
 import ProtectedRoute from "./ProtectedRoute";
@@ -5,7 +6,6 @@ import Register from "./Register";
 import Login from "./Login";
 import Main from "./Main";
 import Footer from "./Footer";
-import { useEffect, useState } from "react";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -16,7 +16,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
 import avatarPlaceholder from "../images/avatar.svg";
 
-function App() {
+const App = () => {
   const [currentUser, setCurrentUser] = useState({
     name: "Name",
     about: "Description",
@@ -34,20 +34,13 @@ function App() {
     link: "",
     _id: "",
   });
+
+  //------ loading states ---------//
+  const [isUserSendig, setIsUserSendig] = useState(false);
   const [authResult, setAuthResult] = useState(false);
   const [cards, setCards] = useState([]);
   const [email, setEmail] = useState("email");
   const history = useHistory();
-
-  //placeholders on mount
-  // useEffect(() => {
-  //   const userPlaceholder = {
-  //     name: "Name",
-  //     about: "Description",
-  //     avatar: avatarPlaceholder,
-  //   };
-  //   setCurrentUser(userPlaceholder);
-  // }, []);
 
   // check if token in local storage, if it exists then auth user
   useEffect(() => {
@@ -60,7 +53,7 @@ function App() {
 
   // auth user by using token
   // then set loggedIn to true if successful and redirect to main page
-  function auth(jwt) {
+  const auth = (jwt) => {
     return api.getContent(jwt).then(({ data }) => {
       if (data) {
         setEmail(data.email);
@@ -181,24 +174,30 @@ function App() {
 
   // name/description setter
   const handleUpdateUser = (userData) => {
+    setIsUserSendig(true);
     api
       .setUserInfo(userData)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
       })
-      .catch((err) => {
-        console.log(`Ошибка ${err}`);
-      });
+      .catch((err) => 
+        console.log(`Ошибка ${err}`))
+      .finally(() => setIsUserSendig(false));
   }
   // avatar setter
   const handleUpdateAvatar = (userData) => {
+    setIsUserSendig(true);
     api
       .setAvatar(userData)
-      .then((data) => setCurrentUser(data), closeAllPopups())
+      .then((data) => {
+        setCurrentUser(data)
+        closeAllPopups()
+      })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
-      });
+      })
+      .finally(() => setIsUserSendig(false));
   }
 
   //-----------------Popups section----------------//
@@ -277,11 +276,13 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isSending={isUserSendig}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          isSending={isUserSendig}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}

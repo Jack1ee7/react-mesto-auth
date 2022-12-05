@@ -1,7 +1,6 @@
 import logo from "../images/logo.svg";
 import { Link, Route, Switch } from "react-router-dom";
 const Header = ({ onLogout, email }) => {
-
   return (
     <header className="header">
       <img src={logo} alt="Логотип Место" className="header__logo" />
@@ -31,6 +30,6 @@ const Header = ({ onLogout, email }) => {
       </Switch>
     </header>
   );
-}
+};
 
 export default Header;

@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 
 const PopupWithForm = ({
-  name,
-  title,
   isOpen,
-  onClose,
-  buttonText,
   onSubmit,
+  onClose,
+  title,
+  name,
+  buttonText,
+  isDisabled = false,
   children,
 }) => {
   
@@ -47,11 +48,13 @@ const PopupWithForm = ({
         >
           {children}
           <button
-            className="popup__form-submit-button"
+            className={`popup__form-submit-button ${
+              isDisabled && "popup__form-submit-button_disabled"
+              }`}
             type="submit"
-            id={`#${name}PopupSubmit`}
-          >
-            {`${buttonText}`}
+            disabled={isDisabled}
+          > 
+            {buttonText}
           </button>
         </form>
       </div>

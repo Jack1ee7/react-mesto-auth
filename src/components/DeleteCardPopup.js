@@ -1,6 +1,6 @@
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onDelete, card }) {
+const EditAvatarPopup = ({ isOpen, onClose, onDelete, card }) => {
   
   const handleSubmit = (e) => {
     // Запрещаем браузеру переходить по адресу формы
